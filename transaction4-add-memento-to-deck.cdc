@@ -1,5 +1,4 @@
-import Toke from 0x179b6b1cb6755e31
-
+import Toke from 0xf3fcd2c1a78f5eee
 // This transaction is how a Top Shot admin adds a created play to a set
 
 transaction() {
@@ -15,5 +14,7 @@ transaction() {
 
         // Add the specified play ID
         deckRef.addMemento(mementoID:1)
+
+        log("Memento added to a deck")
     }
 }

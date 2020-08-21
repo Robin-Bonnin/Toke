@@ -1,4 +1,4 @@
-import Toke from 0x179b6b1cb6755e31
+import Toke from 0xf3fcd2c1a78f5eee
 pub contract FanCoin {
 
     // Event that is emitted when the contract is created

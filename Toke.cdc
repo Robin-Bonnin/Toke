@@ -1,4 +1,4 @@
-import NonFungibleToken from 0x01cf0e2f2f715450
+import NonFungibleToken from 0x179b6b1cb6755e31
 
 pub contract Toke : NonFungibleToken {
 
