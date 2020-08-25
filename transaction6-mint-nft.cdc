@@ -15,12 +15,12 @@ transaction() {
             ?? panic("No admin resource in storage")
     }
     execute{
-        // Borrow a reference to the specified set
+        // Borrow a reference to the specified deck
         let setRef = self.adminRef.borrowDeck(deckID: 1)
 
         // Mint a new NFT
         let moment1 <- setRef.mintMemento(mementoID: 2,fanPoints:3000)
-    // Get the recipient's public account object
+        // Get the recipient's public account object
         let recipient = getAccount(0xf669cb8d41ce0c74)
         // get the Collection reference for the receiver
         let receiverRef = recipient.getCapability(/public/TokeCollection)!.borrow<&{Toke.MementoCollectionPublic}>()

@@ -8,7 +8,7 @@ transaction() {
         let admin = acct.borrow<&Toke.Admin>(from: /storage/TokeAdmin)
             ?? panic("Could not borrow a reference to the Admin resource")
         log("Before creating a deck")
-        // Create a set with the specified name
+        // Create a deck with the specified name
         admin.createDeck(name: "Weirdo stuff")
         log("Deck created")
     }

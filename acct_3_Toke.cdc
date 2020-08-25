@@ -345,7 +345,7 @@ pub contract Toke : NonFungibleToken {
         pub var deckDatas: {UInt32: DeckData}
 
         // Variable size dictionary of deck resources
-        access(self) var decks: @{UInt32: Deck}
+        pub var decks: @{UInt32: Deck}
 
         // The ID that is used to create mementos. 
         // Every time a memento is created, mementoID is assigned 
