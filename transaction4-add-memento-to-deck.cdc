@@ -13,7 +13,7 @@ transaction() {
         let deckRef = admin.borrowDeck(deckID: 1)
 
         // Add the specified play ID
-        deckRef.addMemento(mementoID:1)
+        deckRef.addMemento(mementoID:2)
 
         log("Memento added to a deck")
     }

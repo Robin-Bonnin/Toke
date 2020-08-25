@@ -2,13 +2,6 @@ import FanCoin from 0xe03daebed8ca0615
 import Toke from 0xf3fcd2c1a78f5eee
 import NonFungibleToken from 0x179b6b1cb6755e31
 
-// Marketplace.cdc
-//
-// The Marketplace contract is a sample implementation of an NFT Marketplace on Flow.
-//
-// This contract allows users to put their NFTs up for sale. Other users
-// can purchase these NFTs with fungible tokens.
-
 pub contract Marketplace {
 
   // Event that is emitted when a new NFT is put up for sale
@@ -23,13 +16,11 @@ pub contract Marketplace {
   // Event that is emitted when a seller withdraws their NFT from the sale
   pub event SaleWithdrawn(id: UInt64)
 
-  pub var saleID: UInt64
-
   // Interface that users will publish for their Sale collection
   // that only exposes the methods that are supposed to be public
   //
   pub resource interface SalePublic {
-    pub fun purchase(tokenID: UInt64, recipient: &AnyResource{NonFungibleToken.Receiver}, buyTokens: UFix64)
+    pub fun purchase(tokenID: UInt64, recipient: &AnyResource{NonFungibleToken.Receiver}, buyTokens: UFix64,fanCoin:&FanCoin.LeaderBoardManager, adminPublic: &{FanCoin.AdminPublic}, leaderBoard:&FanCoin.LeaderBoardManager)
     pub fun idPrice(tokenID: UInt64): UFix64?
     pub fun getIDs(): [UInt64]
     pub fun getIDsAndfanPoints(): [{UInt64:UInt64?}]
@@ -73,7 +64,6 @@ pub contract Marketplace {
 
         // store the price in the price array
         self.prices[id] = price
-
         // put the NFT into the the forSale dictionary
         let oldToken <- self.forSale[id] <- token
         destroy oldToken
@@ -88,8 +78,10 @@ pub contract Marketplace {
         emit PriceChanged(id: tokenID, newPrice: newPrice)
     }
 
+
+
     // purchase lets a user send tokens to purchase an NFT that is for sale
-        pub fun purchase(tokenID: UInt64, recipient: &AnyResource{NonFungibleToken.Receiver}, buyTokens: UFix64) {
+    pub fun purchase(tokenID: UInt64, recipient: &AnyResource{NonFungibleToken.Receiver}, buyTokens: UFix64, fanCoin:&FanCoin.LeaderBoardManager, adminPublic: &{FanCoin.AdminPublic}, leaderBoard:&FanCoin.LeaderBoardManager) {
         pre {
             self.forSale[tokenID] != nil && self.prices[tokenID] != nil:
                 "No token matching this ID for sale!"
@@ -98,15 +90,20 @@ pub contract Marketplace {
         }
 
         // get the value out of the optional
-        let price = self.prices[tokenID]! 
+        let price = self.prices[tokenID]!
+
 
         self.prices[tokenID] = nil
 
+
+
         // deposit the purchasing tokens into the owners vault
         self.balance = self.balance +buyTokens
+        let NFT <-self.withdraw(tokenID: tokenID)
+        leaderBoard.depositFanCoins(adminPublic:adminPublic as &{FanCoin.AdminPublic},NFT:&NFT as &Toke.NFT)
 
         // deposit the NFT into the buyers collection
-        recipient.deposit(token: <-self.withdraw(tokenID: tokenID))
+        recipient.deposit(token: <- NFT )
 
         emit TokenPurchased(id: tokenID, price: price)
         
@@ -149,10 +146,6 @@ pub contract Marketplace {
   // createCollection returns a new collection resource to the caller
   pub fun createSaleCollection(): @SaleCollection {
     return <- create SaleCollection(balance: 0.0)
-  }
-
-  init(){
-      self.saleID = 1
   }
 }
  

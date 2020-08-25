@@ -36,14 +36,13 @@ pub contract FanCoin {
             self.fanBoard = {}
         }
 
-        pub fun createEmptyFanBoard(FanAdmin: &FanAdmin) {
-            var FanAdminRef = FanAdmin as &FanAdmin
-            var FanAdminID = FanAdminRef.vaultID
+        pub fun createEmptyFanBoard(adminPublic: &{FanCoin.AdminPublic}) {
+            var FanAdminID = adminPublic.getAdminID()
             self.fanBoard[FanAdminID] = 0
         }
 
-        pub fun depositFanCoins(FanAdmin: &FanAdmin, NFT: &Toke.NFT){
-            let FanAdminID = FanAdmin.vaultID
+        pub fun depositFanCoins(adminPublic: &{FanCoin.AdminPublic}, NFT: &Toke.NFT){
+            let FanAdminID = adminPublic.getAdminID()
             self.fanBoard[FanAdminID] = self.fanBoard[FanAdminID]! + NFT.fanPoints
         }
 
@@ -51,13 +50,21 @@ pub contract FanCoin {
         }
     }
 
-    pub resource FanAdmin {
+    pub resource interface AdminPublic{
+        pub fun getAdminID(): UInt32
+    }
 
-        pub var vaultID: UInt32
+    pub resource FanAdmin: AdminPublic {
+
+        pub var adminID: UInt32
+
+        pub fun getAdminID():UInt32 {
+            return self.adminID
+        }
 
         // initialize the balance at resource creation time
         init() {
-            self.vaultID = FanCoin.nextFanAdminID
+            self.adminID = FanCoin.nextFanAdminID
             FanCoin.nextFanAdminID = FanCoin.nextFanAdminID + UInt32(1)
         }
 

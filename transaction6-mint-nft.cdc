@@ -19,7 +19,7 @@ transaction() {
         let setRef = self.adminRef.borrowDeck(deckID: 1)
 
         // Mint a new NFT
-        let moment1 <- setRef.mintMemento(mementoID: 1,fanPoints:100)
+        let moment1 <- setRef.mintMemento(mementoID: 2,fanPoints:3000)
     // Get the recipient's public account object
         let recipient = getAccount(0xf669cb8d41ce0c74)
         // get the Collection reference for the receiver

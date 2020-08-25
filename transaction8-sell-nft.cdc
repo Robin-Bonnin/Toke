@@ -19,10 +19,10 @@ transaction {
     
         // Withdraw the NFT from the collection that you want to sell
         // and move it into the transaction's context
-        let token <- collectionRef.withdraw(withdrawID: 1) as! @Toke.NFT
+        let token <- collectionRef.withdraw(withdrawID: 2) as! @Toke.NFT
 
         // List the token for sale by moving it into the sale object
-        self.sale.listForSale(token: <-token, price: UFix64(150))
+        self.sale.listForSale(token: <-token, price: UFix64(250))
 
         // Create a public capability to the sale so that others can call its methods
         acct.link<&Marketplace.SaleCollection{Marketplace.SalePublic}>(/public/NFTSale, target: /storage/NFTSale)
