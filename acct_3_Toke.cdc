@@ -3,6 +3,7 @@ import NonFungibleToken from 0x179b6b1cb6755e31
 pub contract Toke : NonFungibleToken {
     // Emitted when a new Memento struct is created
     pub event MementoCreated(id: UInt32, metadata: {String:String})
+    pub event ContractInitialized()
 
     // Events for Deck-Related actions
     //
@@ -309,7 +310,7 @@ pub contract Toke : NonFungibleToken {
         // Struct of memento metadata
         pub let data: MementoData
         // Number of fanpoints fans will get when doing actions with their tokens
-        pub(deck) var fanPoints: UInt64
+        pub var fanPoints: UInt64
 
         init(serialNumber: UInt32, mementoID: UInt32, deckID: UInt32, fanPoints: UInt64, admin: &Admin) {
             
@@ -758,20 +759,14 @@ pub contract Toke : NonFungibleToken {
         return <- create Toke.Admin()
     }
 
-    
-
-
-
-
-
-
-
-        // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     // TopShot initialization function
     // -----------------------------------------------------------------------
     //
     init() {
         self.totalSupply = 0
+        emit ContractInitialized()
+
     }
 
 }
