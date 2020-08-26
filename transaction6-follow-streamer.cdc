@@ -2,9 +2,9 @@ import FanCoin from 0xe03daebed8ca0615
 import Toke from 0xf3fcd2c1a78f5eee
 
 
-// This transaction sets up account 0x01 for the marketplace tutorial
-// by publishing a Vault reference and creating an empty NFT Collection.
-//Signed by the user
+// This transaction creates an empty, fanBoard in the user's account. Since it requires the admin capability, we need to sign it by the admin here.
+
+//Signed by the admin
 transaction {
     let leaderboard: &FanCoin.LeaderBoardManager
 

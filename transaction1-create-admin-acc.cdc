@@ -1,20 +1,23 @@
 import FanCoin from 0xe03daebed8ca0615
 import Toke from 0xf3fcd2c1a78f5eee
 
-// This transaction sets up account 0x01 for the marketplace tutorial
-// by publishing a Vault reference and creating an empty NFT Collection.
-//Signed by the admin
+// This transaction sets up an admin account
+
+// Signed by the user that creates an admin account 
 transaction {
     prepare(acct: AuthAccount) {
-      // create a new vault instance with an initial balance of 30
+    // Create an empty FanCoin Admin resource
     let FanAdmin <- FanCoin.createEmptyFanAdmin()
 
+    // Create an empty Toke Admin
     let TokeAdmin <- Toke.createAdmin()
-    // Store the vault in the account storage
+    // Save the resources in storage
     acct.save<@FanCoin.FanAdmin>(<-FanAdmin, to: /storage/FanAdmin)
     acct.save<@Toke.Admin>(<-TokeAdmin,to: /storage/TokeAdmin)
 
-    acct.link<&{FanCoin.AdminPublic}>(/public/AdminPublic, target: /storage/FanAdmin)
+    // Save admin capabilities to the private domain
+    acct.link<&Toke.Admin>(/private/Admin, target: /storage/TokeAdmin)
+    acct.link<&FanCoin.FanAdmin>(/private/admin, target: /storage/FanAdmin)
 
     log("Admin account created")
   }
