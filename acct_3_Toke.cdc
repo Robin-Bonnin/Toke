@@ -122,7 +122,6 @@ pub contract Toke : NonFungibleToken {
             return self.mementos
         }
 
-
         pub fun unlockDeck(){
             self.locked = false
 
@@ -254,11 +253,16 @@ pub contract Toke : NonFungibleToken {
         }
     }
 
+    pub resource interface AdminPublic {
+        pub fun listDecks(): {UInt32:String}
+        pub fun listMementos(): {UInt32:String} 
+    }
+
     // Admin is a special authorization resource that 
     // allows the owner to perform important functions to modify the 
     // various aspects of the mementos, decks, and mementos
     //
-    pub resource Admin {
+    pub resource Admin : AdminPublic {
        
         pub var mementoDatas: {UInt32: Memento}
 
@@ -268,7 +272,6 @@ pub contract Toke : NonFungibleToken {
 
         pub var nextMementoID: UInt32
 
-        
         pub var nextDeckID: UInt32
 
         pub var totalSupply: UInt64
@@ -294,7 +297,23 @@ pub contract Toke : NonFungibleToken {
             self.nextDeckID = self.nextDeckID + UInt32(1)
         }
 
-    
+        pub fun listDecks(): {UInt32:String} {
+            var tmpDecks:{UInt32:String} = {}
+            for id in self.decks.keys {
+                tmpDecks[id] = self.getDeckName(deckID:id)
+            }
+            return tmpDecks
+        }
+
+        pub fun listMementos(): {UInt32:String} {
+            var tmpMementos:{UInt32:String} = {}
+            for id in self.mementoDatas.keys {
+                let dict = self.getMementoMetaData(mementoID:id)
+                tmpMementos[id] = dict!.keys[0] as String? 
+            }
+            return tmpMementos
+        }
+
         pub fun getMementoMetaDataByField(mementoID: UInt32, field: String): String? {
 
             if let memento = self.mementoDatas[mementoID] {
