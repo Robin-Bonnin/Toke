@@ -18,6 +18,7 @@ transaction {
     // Save admin capabilities to the private domain
     acct.link<&Toke.Admin>(/private/Admin, target: /storage/TokeAdmin)
     acct.link<&{Toke.AdminPublic}>(/public/TokePublic, target: /storage/TokeAdmin)
+    acct.link<&{FanCoin.AdminPublic}>(/public/CoinPublic, target: /storage/FanAdmin)
     acct.link<&FanCoin.FanAdmin>(/private/admin, target: /storage/FanAdmin)
 
     log("Admin account created")

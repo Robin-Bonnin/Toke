@@ -15,10 +15,10 @@ transaction {
     execute {
 
       // Get the recipient's public account object
-    let admin = getAccount(0x120e725050340cab)
+    let admin = getAccount(0xfd43f9148d4b725d)
     
     // get the Collection reference for the receiver
-    let adminRef = admin.getCapability(/public/AdminPublic)!.borrow<&{FanCoin.AdminPublic}>()!
+    let adminRef = admin.getCapability(/public/CoinPublic)!.borrow<&{FanCoin.AdminPublic}>()!
 
     self.leaderboard.createEmptyFanBoard(adminPublic: adminRef as &{FanCoin.AdminPublic})
 

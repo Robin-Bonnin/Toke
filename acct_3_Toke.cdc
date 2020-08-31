@@ -424,6 +424,7 @@ pub contract Toke : NonFungibleToken {
         pub fun deposit(token: @NonFungibleToken.NFT)
         pub fun batchDeposit(tokens: @NonFungibleToken.Collection)
         pub fun getIDs(): [UInt64]
+        pub fun listNFTs():[UInt64]
         pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT
         pub fun borrowMemento(id: UInt64): &Toke.NFT? {
             post {
@@ -460,8 +461,12 @@ pub contract Toke : NonFungibleToken {
             
             return <-batchCollection
         }
+        // !! There will be issues in case of overlapping ids
+        pub fun listNFTs(): [UInt64] {
+            return self.ownedNFTs.keys
+        }
 
-       
+
         pub fun deposit(token: @NonFungibleToken.NFT) {
             
             
